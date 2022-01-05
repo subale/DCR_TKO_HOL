@@ -2,9 +2,9 @@
 // Data Clean Room Hands on Lab    //
 // Script Name: Party2_Demo        //
 // Script Author: Michael Rainey   //
-// Script Date: Dec 2020           //    
+// Script Date: Dec 2021           //    
 // Lab Author: Rachel Blum         //
-// Lab Date: January 2021          //
+// Lab Date: February 2022         //
 /////////////////////////////////////
 
 
@@ -17,5 +17,5 @@ call clean_room.dcr_internal.generate_query_request('customer_results','2_party_
 
 //DEMO - Step 2:  Run Validate the Query in Party 1
 
-//Demo - Step 3: check the table
+//DEMO - Step 3: check the table
 select * from clean_room.dcr_internal.customer_results;
