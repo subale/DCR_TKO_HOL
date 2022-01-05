@@ -301,7 +301,7 @@ $$
 -- poll REQUEST_STATUS shared table(s) for request id
 -- run generated CTAS statement
 
-CREATE OR REPLACE PROCEDURE clean_room.dcr_internal.generate_query_request(target_table_name VARCHAR,query_template_name VARCHAR,select_column_list VARCHAR,filters VARCHAR, at_timestamp VARCHAR, parties VARCHAR)
+CREATE OR REPLACE PROCEDURE clean_room.dcr_internal.generate_query_request(target_table_name VARCHAR,query_template_name VARCHAR,select_column_list VARCHAR,filters VARCHAR, parties VARCHAR)
   RETURNS VARCHAR
   LANGUAGE JAVASCRIPT
   EXECUTE AS CALLER
@@ -318,12 +318,8 @@ try {
     var filters = FILTERS;
     var target_table_name = TARGET_TABLE_NAME;
     var query_template_name = QUERY_TEMPLATE_NAME;
-    var at_timestamp = AT_TIMESTAMP;
-    if (at_timestamp) {
-      at_timestamp = "\$\$" + at_timestamp + "\$\$::string";
-    } else {
-      at_timestamp = "CURRENT_TIMESTAMP()::string";
-    }
+    var at_timestamp = "CURRENT_TIMESTAMP()::string";
+   
     var parties = PARTIES;
 
     var call_generate_results_sql = "";
