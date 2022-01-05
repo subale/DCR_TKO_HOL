@@ -1,6 +1,6 @@
 /////////////////////////////////////
 // Data Clean Room Hands on Lab    //
-// Script Name: Party2_Setup2     //
+// Script Name: Party2_Setup2      //
 // Script Author: Michael Rainey   //
 // Script Date: Dec 2020           //    
 // Lab Author: Rachel Blum         //
