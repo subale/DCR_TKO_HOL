@@ -1,6 +1,11 @@
-/*** ***/
-/*** All other parties create their share objects and add OH18912 account to the share ***/
-/*** ***/
+/////////////////////////////////////
+// Data Clean Room Hands on Lab    //
+// Script Name: Party2_Setup2     //
+// Script Author: Michael Rainey   //
+// Script Date: Dec 2020           //    
+// Lab Author: Rachel Blum         //
+// Lab Date: January 2021          //
+/////////////////////////////////////
 
 /* add inbound share(s) */
 

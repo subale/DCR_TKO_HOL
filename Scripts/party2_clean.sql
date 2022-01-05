@@ -1,3 +1,12 @@
+/////////////////////////////////////
+// Data Clean Room Hands on Lab    //
+// Script Name: Party2_Clean       //
+// Script Author: Michael Rainey   //
+// Script Date: Dec 2020           //    
+// Lab Author: Rachel Blum         //
+// Lab Date: January 2021          //
+/////////////////////////////////////
+
 use role accountadmin;
 use warehouse party2wh;
 
