@@ -34,25 +34,20 @@ create or replace table alice1.data.my_wealth as select 1110000 as wealth;
 use role bob1;
 create or replace table bob1.data.my_wealth as select 1250000 as wealth;
 
-//Bob creates a table for allowed statements
+//Bob creates a table for allowed statements = this table will hold SQL statements that Bob will allow Alice to run against Bob’s data
 create or replace table bob1.data.allowed_statements ( statement varchar(20000) );  
 
-// This table will hold SQL statements that Bob will allow Alice to run against Bob’s data
-
-
+//Bob creates a row access policy to protect his table
 --row access policy
 CREATE OR REPLACE ROW ACCESS POLICY bob1.data.num_mask AS (wealth integer) returns boolean ->
     current_role() IN ('ACCOUNTADMIN','BOB1')
       or exists  (select statement from  bob1.data.allowed_statements where statement=current_statement() );
     
-    
-//Bob applies a row access policy to his wealth table
-
+//Bob applies this row access policy to his wealth table
 --apply row access policy
 alter table bob1.data.my_wealth add row access policy bob1.data.num_mask on (wealth);
 
 //Bob inserts an allowed statement into his allowed statements table
-
 insert into bob1.data.allowed_statements (statement)
 values ('select case
 when bob.wealth > alice.wealth then \'bob is richer\'
@@ -63,7 +58,7 @@ alice1.data.my_wealth alice
 where exists (select table_name from alice1.information_schema.tables where table_schema = \'DATA\' and table_name = \'MY_WEALTH\' and table_type = \'BASE TABLE\');');
 
 
-
+//Bob grants usage on table to Alice
 grant usage on database bob1 to role alice1;
 grant usage on schema bob1.data to role alice1;
 grant select on table bob1.data.my_wealth to role alice1;
@@ -72,10 +67,11 @@ grant select on table bob1.data.my_wealth to role alice1;
 
 use role alice1;
 
+//Alice asks a question that is not allowed
 select * from bob1.data.my_wealth;
 
 
-     
+//Alice asks a question that is allowed     
 select case
 when bob.wealth > alice.wealth then 'bob is richer'
 when bob.wealth = alice.wealth then 'neither is richer'
