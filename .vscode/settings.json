@@ -1,0 +1,40 @@
+{
+    "sqltools.connections": [
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "mna66380 party2",
+            "account": "mna66380",
+            "username": "rblum",
+            "password": "SnowRB01!",
+            "database": "CLEAN_ROOM",
+            "warehouse": "party2wh"
+        },
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "ufa43389 party1",
+            "account": "ufa43389",
+            "username": "rblum",
+            "password": "SnowRB01!",
+            "database": "CLEAN_ROOM",
+            "warehouse": "party1wh"
+        }
+    ]
+}
