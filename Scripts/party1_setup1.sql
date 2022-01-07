@@ -7,18 +7,15 @@
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
-
-//Party 1: UFA43389
-//Party 2: MNA66380
-
-//Replace my username rblum with your user name
+//set these variables 
+set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
 
 
 --create role
 USE ROLE securityadmin;
 CREATE OR REPLACE ROLE party1;
 GRANT ROLE party1 TO ROLE sysadmin;
-GRANT ROLE party1 TO USER rblum;
+GRANT ROLE party1 TO USER identifier($myusername);
 
 --grant privileges
 USE ROLE accountadmin;
@@ -77,7 +74,7 @@ CREATE OR REPLACE TABLE clean_room.dcr_internal.approved_query_requests
 --row access policy
 CREATE OR REPLACE ROW ACCESS POLICY party1.source.dcr_rap AS (customer_name varchar, customer_address varchar, phone varchar, email varchar) returns boolean ->
     current_role() IN ('ACCOUNTADMIN','PARTY1')
-      or exists  (select query_text from clean_room.dcr_internal.approved_query_requests where query_text=current_statement() or query_text=sha2(current_statement()));party1_
+      or exists  (select query_text from clean_room.dcr_internal.approved_query_requests where query_text=current_statement() or query_text=sha2(current_statement()));
 
 --apply row access policy
 alter table party1.source.customers add row access policy party1.source.dcr_rap on (customer_name, customer_address, phone, email);
@@ -98,7 +95,6 @@ LANGUAGE JAVASCRIPT
 EXECUTE AS CALLER
 AS
 $$
-
 try {
   //INSERT NEW REQUESTS INTO THEIR SECURE QUERY STATUS
 
@@ -341,8 +337,8 @@ GRANT USAGE ON DATABASE party1 TO SHARE party1_source;
 GRANT USAGE ON SCHEMA party1.source TO SHARE party1_source;
 GRANT SELECT ON TABLE party1.source.customers TO SHARE party1_source;
 
---add accounts to shares >> Change to your Party2 and Party3 Accounts
-ALTER SHARE PARTY1_DCR ADD ACCOUNTS = MNA66380;
-ALTER SHARE PARTY1_SOURCE ADD ACCOUNTS = MNA66380;
+--add accounts to shares >> Change to your  Accounts  adding in remove share restrictions in case BC to Enterprise
+ALTER SHARE PARTY1_DCR ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
+ALTER SHARE PARTY1_SOURCE ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
 
 

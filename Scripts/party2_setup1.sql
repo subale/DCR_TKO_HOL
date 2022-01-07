@@ -7,22 +7,16 @@
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
-
-
-//Party 1: UFA43389
-//Party 2: MNA66380
-
 /* party2 account setup */
 
-//Replace my username rblum with your user name
-
-
+//set these variables 
+set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
 
 --create role
 USE ROLE securityadmin;
 CREATE OR REPLACE ROLE party2;
 GRANT ROLE party2 TO ROLE sysadmin;
-GRANT ROLE party2 TO USER rblum;
+GRANT ROLE party2 TO USER identifier($myusername);
 
 --grant privileges
 USE ROLE accountadmin;
@@ -520,7 +514,7 @@ GRANT USAGE ON DATABASE party2 TO SHARE party2_source;
 GRANT USAGE ON SCHEMA party2.source TO SHARE party2_source;
 GRANT SELECT ON TABLE party2.source.customers TO SHARE party2_source;
 
---add accounts to share>> Add accounts Party 1 and Party 3
-ALTER SHARE party2_dcr ADD ACCOUNTS = UFA43389;
-ALTER SHARE party2_source ADD ACCOUNTS = UFA43389;
-
+--add accounts to share>> Add accounts Party 1.  adding in remove share restrictions in case BC to Enterprise
+use role ACCOUNTADMIN;
+ALTER SHARE party2_dcr ADD ACCOUNTS = identifier($party1account) SHARE_RESTRICTIONS=false;
+ALTER SHARE party2_source ADD ACCOUNTS = identifier($party1account) SHARE_RESTRICTIONS=false;

@@ -79,3 +79,9 @@ else 'alice is richer' end
 from bob1.data.my_wealth bob, 
 alice1.data.my_wealth alice
 where exists (select table_name from alice1.information_schema.tables where table_schema = 'DATA' and table_name = 'MY_WEALTH' and table_type = 'BASE TABLE');
+
+
+////Clean
+//use role accountadmin;
+//drop database if exists bob1;
+//drop database if exists alice1;

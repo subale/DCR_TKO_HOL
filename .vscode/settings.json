@@ -7,7 +7,8 @@
             },
             "snowflakeOptions": {
                 "clientSessionKeepAlive": true,
-                "clientSessionKeepAliveHeartbeatFrequency": 3600
+                "clientSessionKeepAliveHeartbeatFrequency": 3600,
+                "role": "ACCOUNTADMIN"
             },
             "previewLimit": 50,
             "driver": "Snowflake",
@@ -15,8 +16,8 @@
             "account": "mna66380",
             "username": "rblum",
             "password": "SnowRB01!",
-            "database": "CLEAN_ROOM",
-            "warehouse": "party2wh"
+            "database": "SNOWFLAKE",
+            "warehouse": "default_wh"
         },
         {
             "authenticator": "SNOWFLAKE",
@@ -25,7 +26,8 @@
             },
             "snowflakeOptions": {
                 "clientSessionKeepAlive": true,
-                "clientSessionKeepAliveHeartbeatFrequency": 3600
+                "clientSessionKeepAliveHeartbeatFrequency": 3600,
+                "role": "ACCOUNTADMIN"
             },
             "previewLimit": 50,
             "driver": "Snowflake",
@@ -33,8 +35,8 @@
             "account": "ufa43389",
             "username": "rblum",
             "password": "SnowRB01!",
-            "database": "CLEAN_ROOM",
-            "warehouse": "party1wh"
+            "database": "SNOWFLAKE",
+            "warehouse": "default_wh"
         }
     ]
 }

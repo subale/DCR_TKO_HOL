@@ -7,16 +7,18 @@
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
-//Replace my Party1 account UFA43389 with your Party1 account
-//Replace my Party2 account MNA66380 with your Party2 account
+//set these variables 
+set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
+
 
 /* add inbound share(s) */
+use role accountadmin;
 
 --create databases and grant privileges >> Change to your party 2 and 3 accounts
-CREATE OR REPLACE DATABASE clean_room_party2 FROM SHARE MNA66380.party2_dcr;
+CREATE OR REPLACE DATABASE clean_room_party2 FROM SHARE identifier($party2account).party2_dcr;
 GRANT IMPORTED PRIVILEGES ON DATABASE clean_room_party2 TO ROLE party1;
 
-CREATE OR REPLACE DATABASE party2_source FROM SHARE MNA66380.party2_source;
+CREATE OR REPLACE DATABASE party2_source FROM SHARE identifier($party2account).party2_source;
 GRANT IMPORTED PRIVILEGES ON DATABASE party2_source TO ROLE party1;
 
 

@@ -2,24 +2,23 @@
 // Data Clean Room Hands on Lab    //
 // Script Name: Party2_Setup2      //
 // Script Author: Michael Rainey   //
-// Script Date: Dec 2021           //    
+// Script Date: Dec 2021           //
 // Lab Author: Rachel Blum         //
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
-//Replace my Party1 account UFA43389 with your Party1 account
-//Replace my Party2 account MNA66380 with your Party2 account
-
+//set these variables 
+set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
 
 /* add inbound share(s) */
-
+use role accountadmin;
 --create databases and grant privileges
-CREATE OR REPLACE DATABASE clean_room_party1 FROM SHARE UFA43389.party1_dcr;
+CREATE OR REPLACE DATABASE clean_room_party1 FROM SHARE identifier($party1account).party1_dcr;
 GRANT IMPORTED PRIVILEGES ON DATABASE clean_room_party1 TO ROLE party2;
 
 
 --create databases and grant privileges
-CREATE OR REPLACE DATABASE party1_source FROM SHARE UFA43389.party1_source;
+CREATE OR REPLACE DATABASE party1_source FROM SHARE identifier($party1account).party1_source;
 GRANT IMPORTED PRIVILEGES ON DATABASE party1_source TO ROLE party2;
 
 
