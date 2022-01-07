@@ -7,8 +7,7 @@
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
---call validate query request procedure to test with party1 account locator
-call clean_room.dcr_internal.validate_query('UFA43389');
+//Replace my Party2 account MNA66380 with your Party2 account
 
 //DEMO
 --call validate query request procedure demo with party2 account locator
