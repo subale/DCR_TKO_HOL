@@ -12,8 +12,6 @@
 //Party 2: MNA66380
 
 //Replace my username rblum with your user name
-//Replace my Party1 account UFA43389 with your Party1 account
-//Replace my Party2 account MNA66380 with your Party2 account
 
 
 --create role

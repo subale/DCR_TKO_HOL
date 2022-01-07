@@ -7,6 +7,9 @@
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
+//Replace my Party1 account UFA43389 with your Party1 account
+//Replace my Party2 account MNA66380 with your Party2 account
+
 /* add inbound share(s) */
 
 --create databases and grant privileges >> Change to your party 2 and 3 accounts
