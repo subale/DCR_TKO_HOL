@@ -26,9 +26,9 @@ GRANT EXECUTE TASK ON ACCOUNT TO ROLE party1;
 GRANT CREATE WAREHOUSE ON ACCOUNT TO ROLE party1;
 
 //Mount Sample Data Database
-CREATE OR REPLACE DATABASE "SAMPLE_DATA" FROM SHARE SFC_SAMPLES."SAMPLE_DATA";
-GRANT IMPORTED PRIVILEGES ON DATABASE "SAMPLE_DATA" TO ROLE "ACCOUNTADMIN";
-GRANT IMPORTED PRIVILEGES ON DATABASE "SAMPLE_DATA" TO ROLE "PARTY1";
+CREATE DATABASE if not exists "SNOWFLAKE_SAMPLE_DATA" FROM SHARE SFC_SAMPLES."SAMPLE_DATA";
+GRANT IMPORTED PRIVILEGES ON DATABASE "SNOWFLAKE_SAMPLE_DATA" TO ROLE "ACCOUNTADMIN";
+GRANT IMPORTED PRIVILEGES ON DATABASE "SNOWFLAKE_SAMPLE_DATA" TO ROLE "PARTY1";
 
 USE ROLE party1;
 /* source object creation */
@@ -51,7 +51,7 @@ SELECT c_custkey customer_id, c_name customer_name, c_address customer_address, 
             WHEN charindex('p',customer_address)>0 THEN 'WA'
             ELSE 'WA'
           END state
-FROM sample_data.tpch_sf1.customer
+FROM snowflake_sample_data.tpch_sf1.customer
 WHERE c_custkey between 9001 and 9050
 ;
 
@@ -338,6 +338,7 @@ GRANT USAGE ON SCHEMA party1.source TO SHARE party1_source;
 GRANT SELECT ON TABLE party1.source.customers TO SHARE party1_source;
 
 --add accounts to shares >> Change to your  Accounts  adding in remove share restrictions in case BC to Enterprise
+use role accountadmin;
 ALTER SHARE PARTY1_DCR ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
 ALTER SHARE PARTY1_SOURCE ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
 

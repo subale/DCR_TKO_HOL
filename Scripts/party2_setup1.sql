@@ -8,12 +8,13 @@
 /////////////////////////////////////
 
 /* party2 account setup */
+USE ROLE securityadmin;
 
 //set these variables 
 set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
 
 --create role
-USE ROLE securityadmin;
+
 CREATE OR REPLACE ROLE party2;
 GRANT ROLE party2 TO ROLE sysadmin;
 GRANT ROLE party2 TO USER identifier($myusername);
@@ -27,9 +28,9 @@ GRANT EXECUTE TASK ON ACCOUNT TO ROLE party2;
 GRANT CREATE WAREHOUSE ON ACCOUNT TO ROLE party2;
 
 //Mount Sample Data Database
-CREATE OR REPLACE DATABASE "SAMPLE_DATA" FROM SHARE SFC_SAMPLES."SAMPLE_DATA";
-GRANT IMPORTED PRIVILEGES ON DATABASE "SAMPLE_DATA" TO ROLE "ACCOUNTADMIN";
-GRANT IMPORTED PRIVILEGES ON DATABASE "SAMPLE_DATA" TO ROLE "PARTY2";
+CREATE DATABASE if not exists "SNOWFLAKE_SAMPLE_DATA" FROM SHARE SFC_SAMPLES."SAMPLE_DATA";
+GRANT IMPORTED PRIVILEGES ON DATABASE "SNOWFLAKE_SAMPLE_DATA" TO ROLE "ACCOUNTADMIN";
+GRANT IMPORTED PRIVILEGES ON DATABASE "SNOWFLAKE_SAMPLE_DATA" TO ROLE "PARTY2";
 
 USE ROLE party2;
 
@@ -55,7 +56,7 @@ SELECT c_custkey customer_id, c_name customer_name, c_address customer_address, 
             WHEN charindex('p',customer_address)>0 THEN 'WA'
             ELSE 'WA'
           END state
-FROM sample_data.tpch_sf1.customer
+FROM snowflake_sample_data.tpch_sf1.customer
 WHERE c_custkey between 9021 and 9070
 ;
 

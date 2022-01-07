@@ -13,14 +13,17 @@ set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380')
 
 /* add inbound share(s) */
 use role accountadmin;
+set shareparty2dcr = concat($party2account,'.party2_dcr');
+set shareparty2source = concat($party2account,'.party2_source');
 
 --create databases and grant privileges >> Change to your party 2 and 3 accounts
-CREATE OR REPLACE DATABASE clean_room_party2 FROM SHARE identifier($party2account).party2_dcr;
+CREATE OR REPLACE DATABASE clean_room_party2 FROM SHARE identifier($shareparty2dcr);
 GRANT IMPORTED PRIVILEGES ON DATABASE clean_room_party2 TO ROLE party1;
 
-CREATE OR REPLACE DATABASE party2_source FROM SHARE identifier($party2account).party2_source;
+CREATE OR REPLACE DATABASE party2_source FROM SHARE identifier($shareparty2source);
 GRANT IMPORTED PRIVILEGES ON DATABASE party2_source TO ROLE party1;
 
+use role party1;
 
 --create stream on each shared query requests table
 CREATE OR REPLACE STREAM clean_room.dcr_internal.party2_new_requests
