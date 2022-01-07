@@ -85,3 +85,6 @@ where exists (select table_name from alice1.information_schema.tables where tabl
 //use role accountadmin;
 //drop database if exists bob1;
 //drop database if exists alice1;
+//drop role if exists bob1;
+//drop role if exists alice1;
+//drop warehouse if exists masking_wh;
