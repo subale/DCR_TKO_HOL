@@ -341,5 +341,3 @@ GRANT SELECT ON TABLE party1.source.customers TO SHARE party1_source;
 use role accountadmin;
 ALTER SHARE PARTY1_DCR ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
 ALTER SHARE PARTY1_SOURCE ADD ACCOUNTS = identifier($party2account) SHARE_RESTRICTIONS=false;
-
-
