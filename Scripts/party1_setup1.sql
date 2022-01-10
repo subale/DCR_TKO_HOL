@@ -2,14 +2,14 @@
 // Data Clean Room Hands on Lab    //
 // Script Name: Party1_Setup1      //
 // Script Author: Michael Rainey   //
-// Script Date: Dec 2021           //    
+// Script Date: Dec 2021           //
 // Lab Author: Rachel Blum         //
 // Lab Date: February 2022         //
 /////////////////////////////////////
 
+/* party1 account setup */
 //set these variables 
 set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
-
 
 --create role
 USE ROLE securityadmin;

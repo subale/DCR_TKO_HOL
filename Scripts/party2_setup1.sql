@@ -8,13 +8,11 @@
 /////////////////////////////////////
 
 /* party2 account setup */
-USE ROLE securityadmin;
-
 //set these variables 
 set (myusername, party1account, party2account) = ('rblum','UFA43389','MNA66380');
 
 --create role
-
+USE ROLE securityadmin;
 CREATE OR REPLACE ROLE party2;
 GRANT ROLE party2 TO ROLE sysadmin;
 GRANT ROLE party2 TO USER identifier($myusername);
