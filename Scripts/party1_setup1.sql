@@ -95,6 +95,7 @@ LANGUAGE JAVASCRIPT
 EXECUTE AS CALLER
 AS
 $$
+
 try {
   //INSERT NEW REQUESTS INTO THEIR SECURE QUERY STATUS
 
@@ -103,6 +104,7 @@ try {
 
   //Get request
   var statement_requests = "SELECT * FROM clean_room.dcr_internal.new_requests_all;";
+
 
   //create temp table to store latest requests
   var create_temp_table_sql = "CREATE OR REPLACE TEMPORARY TABLE clean_room.dcr_internal.requests_temp( \
@@ -153,11 +155,11 @@ try {
                                               ELSE 'Valid' \
                                             END ,',') AS error_field \
                               FROM (SELECT UPPER(TRIM(value)) value FROM TABLE(SPLIT_TO_TABLE(UPPER(" + select_val + "),',')) AS selectp \
-                                    WHERE UPPER(TRIM(selectp.value)) LIKE UPPER('party1.%') \
+                                    WHERE UPPER(TRIM(selectp.value)) LIKE UPPER('party2.%') \
                                     UNION \
                                     SELECT UPPER(TRIM(value)) value \
                                     FROM TABLE(SPLIT_TO_TABLE(UPPER(" + where_val + "),' ')) AS wherep \
-                                    WHERE UPPER(TRIM(wherep.value)) LIKE 'party1.%' AND UPPER(wherep.value) NOT LIKE '%:%' \
+                                    WHERE UPPER(TRIM(wherep.value)) LIKE 'party2.%' AND UPPER(wherep.value) NOT LIKE '%:%' \
                                   ) a \
                                 LEFT OUTER JOIN clean_room.dcr_shared.available_values v \
                                     ON UPPER(TRIM(a.value)) = UPPER(CONCAT(TRIM(v.field_group),'.', TRIM(v.field_name))) \
@@ -194,7 +196,7 @@ try {
 
       //build query from template
       //TODO use shared version if not main provider account
-      var query_text_sql = "SELECT query_template_text FROM clean_room_party2.dcr_shared.query_templates WHERE UPPER(query_template_name) = '" + query_template_name.toUpperCase() + "';";
+      var query_text_sql = "SELECT query_template_text FROM clean_room.dcr_shared.query_templates WHERE UPPER(query_template_name) = '" + query_template_name.toUpperCase() + "';";
       var query_text_statement = snowflake.createStatement( {sqlText: query_text_sql} );
       var query_text_result = query_text_statement.execute();
 
