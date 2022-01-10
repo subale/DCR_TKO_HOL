@@ -78,9 +78,6 @@ CREATE OR REPLACE ROW ACCESS POLICY party1.source.dcr_rap AS (customer_name varc
 
 --apply row access policy
 alter table party1.source.customers add row access policy party1.source.dcr_rap on (customer_name, customer_address, phone, email);
---alter table party1.source.customers drop row access policy party1.source.dcr_rap;
-
-
 
 --validate query procedure
 -- check select/filter against available_values
@@ -269,6 +266,11 @@ return "Success!";
 $$
 ;
 
+
+
+
+
+--"
 
 /* shared objects */
 
