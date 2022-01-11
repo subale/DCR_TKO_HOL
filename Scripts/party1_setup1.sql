@@ -92,7 +92,6 @@ LANGUAGE JAVASCRIPT
 EXECUTE AS CALLER
 AS
 $$
-
 try {
   //INSERT NEW REQUESTS INTO THEIR SECURE QUERY STATUS
 
@@ -101,7 +100,6 @@ try {
 
   //Get request
   var statement_requests = "SELECT * FROM clean_room.dcr_internal.new_requests_all;";
-
 
   //create temp table to store latest requests
   var create_temp_table_sql = "CREATE OR REPLACE TEMPORARY TABLE clean_room.dcr_internal.requests_temp( \
@@ -138,25 +136,23 @@ try {
 
     var where_val = "'" + where_parse.replace(/'/g,':') + "'";
     var where_fields = where_val;
-
     if (!at_timestamp) {
       //TODO error
     }
   
 //TODO figure out how to know which select cols / filters are a part of this accounts source db.
 // require alias as listed in available values table (TODO for available values)
-
     //validate fields put an if query is valid proceed, if not, update status with ERROR at least one of the fields or values specified is not valid
     var statement_validate = "SELECT LISTAGG(CASE WHEN v.field_group IS NULL \
                                               THEN CONCAT(value, ' - Field not available') \
                                               ELSE 'Valid' \
                                             END ,',') AS error_field \
                               FROM (SELECT UPPER(TRIM(value)) value FROM TABLE(SPLIT_TO_TABLE(UPPER(" + select_val + "),',')) AS selectp \
-                                    WHERE UPPER(TRIM(selectp.value)) LIKE UPPER('party2.%') \
+                                    WHERE UPPER(TRIM(selectp.value)) LIKE UPPER('party1.%') \
                                     UNION \
                                     SELECT UPPER(TRIM(value)) value \
                                     FROM TABLE(SPLIT_TO_TABLE(UPPER(" + where_val + "),' ')) AS wherep \
-                                    WHERE UPPER(TRIM(wherep.value)) LIKE 'party2.%' AND UPPER(wherep.value) NOT LIKE '%:%' \
+                                    WHERE UPPER(TRIM(wherep.value)) LIKE 'party1.%' AND UPPER(wherep.value) NOT LIKE '%:%' \
                                   ) a \
                                 LEFT OUTER JOIN clean_room.dcr_shared.available_values v \
                                     ON UPPER(TRIM(a.value)) = UPPER(CONCAT(TRIM(v.field_group),'.', TRIM(v.field_name))) \
@@ -164,16 +160,11 @@ try {
                                       THEN CONCAT(value, ' - Field not available') \
                                       ELSE 'Valid' \
                                     END <> 'Valid';";
-
     var statement_l = snowflake.createStatement( {sqlText: statement_validate} );
     var result_l = statement_l.execute();
-
     while (result_l.next()) {
-
       var error = result_l.getColumnValue(1);
-
       if (error != '') {
-
         //invalid request - insert error record and end runner
         var insert_record = "INSERT INTO clean_room.dcr_shared.request_status \
                             (request_id, request_status, target_table_name, query_text, request_status_ts, comments, account_name) \
@@ -185,22 +176,17 @@ try {
                               CURRENT_TIMESTAMP(),\
                               '" + error + "', \
                               '" + account_name + "');";
-
         var statement_i = snowflake.createStatement( {sqlText: insert_record} );
         var result_i = statement_i.execute();
-
     } else {
-
       //build query from template
       //TODO use shared version if not main provider account
-      var query_text_sql = "SELECT query_template_text FROM clean_room.dcr_shared.query_templates WHERE UPPER(query_template_name) = '" + query_template_name.toUpperCase() + "';";
+      var query_text_sql = "SELECT query_template_text FROM clean_room_party2.dcr_shared.query_templates WHERE UPPER(query_template_name) = '" + query_template_name.toUpperCase() + "';";
       var query_text_statement = snowflake.createStatement( {sqlText: query_text_sql} );
       var query_text_result = query_text_statement.execute();
-
       while (query_text_result.next()) {
           var query_text = query_text_result.getColumnValue(1);
       }
-
       //if query_text is empty, report error *bad template name* else build the query
       if (!query_text) {
           //invalid request - insert error record and end 
@@ -215,31 +201,23 @@ try {
                                 CURRENT_TIMESTAMP(),\
                                 '" + error + "', \
                                 '" + account_name + "');";
-
           var statement_i = snowflake.createStatement( {sqlText: insert_record} );
           var result_i = statement_i.execute();
-
       } else {
           //TODO make this configurable
           var threshold = 3;
-
           var approved_query_text = "CREATE OR REPLACE TABLE " + target_table_name + " AS " + query_text;
-
           approved_query_text = approved_query_text.replace(/@select_cols/g, select_parse);
           approved_query_text = approved_query_text.replace(/@filter/g, where_parse);
           approved_query_text = approved_query_text.replace(/@group_by_cols/g, select_parse);
           approved_query_text = approved_query_text.replace(/@threshold/g, threshold);
           approved_query_text = approved_query_text.replace(/@attimestamp/g, at_timestamp);
-
-
           //insert approved query into approved statements table
           var approved_query_text_sql = "INSERT INTO clean_room.dcr_internal.approved_query_requests (query_name, query_text) \
                                           VALUES ('" + query_template_name + "', " + String.fromCharCode(13, 36, 36) + approved_query_text + String.fromCharCode(13, 36, 36) + ");";
           var approved_query_text_statement = snowflake.createStatement( {sqlText: approved_query_text_sql} );
           var approved_query_text_result = approved_query_text_statement.execute();
-
       }
-
       var insert_approved_sql = "INSERT INTO clean_room.dcr_shared.request_status \
                             (request_id, request_status, target_table_name, query_text, request_status_ts, comments, account_name) \
                             VALUES \
